@@ -155,7 +155,7 @@ def f_datetime(s):
     Each item in the series is converted with this datetime using the apply method of the pandas series without
     automated string format detection.
     '''
-    return s.apply(lambda x:datetime.datetime.strptime(x, '%b-%d-%Y'))
+    return s.apply(lambda x:datetime.datetime.strptime(x, '%b-%d-%Y %H:%M:%S'))
 
 def f_memoize_pandas(s):
     ''' 
@@ -174,7 +174,7 @@ def f_memoize_dt(s):
     Same memoization technique as above except using a datetime parser instead of pandas.
     Minus: No Automated string format detection 
     '''
-    dates = {date:datetime.datetime.strptime(date, '%b-%d-%Y') for date in s.unique()}
+    dates = {date:datetime.datetime.strptime(date, '%b-%d-%Y %H:%M:%S') for date in s.unique()}
     return s.map(dates)
 
 '''
