@@ -10,7 +10,6 @@ url: https://selenium-python.readthedocs.io/
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
-from selenium.webdriver.common.by import By
 
 class Bot:
     '''
