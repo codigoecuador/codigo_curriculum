@@ -1,0 +1,4 @@
+Introduction to advanced SQL
+By Thomas Sullivan
+
+This exercise is optional. It is intended to help you learn how to make an SQL database with multiple tables. We will use the same topic as before, but we will add countries and cities to the database.
