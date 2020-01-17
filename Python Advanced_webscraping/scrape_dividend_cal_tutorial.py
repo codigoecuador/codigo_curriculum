@@ -37,7 +37,7 @@ class dividend_calendar:
           referer = "market-activity/dividends?date={0}-{1}-{2}"
           hdrs = {'Accept': 'application/json, text/plain, */*',
                  'DNT': "1",
-                 'Origin': 'https://www.nasdaq.com',
+                 'Origin': base,
                  'Referer': base + referer.format(year, month, day),
                  'Sec-Fetch-Mode': 'cors',
                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0)'}
@@ -75,17 +75,18 @@ class dividend_calendar:
           dictionary['data']['calendar']['rows'] => dictionary list
     
           '''
-          hdrs = self.header(self.year, self.month, day)
-          url = self.url(self.year, self.month, day)
+          self.day = str(day)
+          hdrs = self.header(self.year, self.month, self.day)
+          url = self.url(self.year, self.month, self.day)
           dictionary = self.scraper(url, hdrs)
           self.dict_to_df(dictionary)
           
           return dictionary
-     def dict_to_df(self, dict):
+     def dict_to_df(self, dicti):
           '''
           Parameters
           ----------
-          dict : Output from the calendar method as input.
+          dicti : Output from the calendar method as input.
           Returns
           -------
           calendar : Dataframe of stocks with that exdividend date
@@ -97,11 +98,11 @@ class dividend_calendar:
           [date]' to the errors list (class attribute).
          '''
           try:
-               rows = dict.get('data').get('calendar').get('rows')
+               rows = dicti.get('data').get('calendar').get('rows')
                calendar = pandas.DataFrame(rows)
                self.calendars.append(calendar)
           except:
-               rows = dict.get('status').get('bCodeMessage')
+               rows = dicti.get('status').get('bCodeMessage')
                calendar = pandas.DataFrame(rows)
                self.errors.append(calendar)
           finally:
