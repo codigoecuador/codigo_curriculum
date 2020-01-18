@@ -27,21 +27,50 @@ class dividend_calendar:
           self.month = str(month)
      
      def url(self, year, month, day):
-          base = 'https://api.nasdaq.com/api/'
-          subdomain = "calendar/dividends?date={0}-{1}-{2}"
-          subdomain = subdomain.format(year, month, day)
-          return base + subdomain
+         '''
+
+         Parameters
+         ----------
+         year : year string
+         month : month string
+         day : day string
+
+         Returns
+         -------
+         URL 
+             base + subdomain = URL 
+             technically when we use requests we can simply pass these three parameters in as a 
+             dictionary with params = {'year':year, 'month':month, 'day':day}
+             For this example we will pass the paramaters manually into the URL.
+
+         '''
+         base = 'https://api.nasdaq.com/api/'
+         subdomain = "calendar/dividends?date={0}-{1}-{2}"
+         subdomain = subdomain.format(year, month, day)
+         return base + subdomain
       
      def header(self, year, month, day):
-          base = 'https://www.nasdaq.com/'
-          referer = "market-activity/dividends?date={0}-{1}-{2}"
-          hdrs = {'Accept': 'application/json, text/plain, */*',
+         '''
+         Parameters
+         ----------
+         year : year as string
+         month : month as string
+         day : day as string
+
+         Returns
+         -------
+         hdrs : dictionary object containing values to header parameters.
+
+         '''
+         base = 'https://www.nasdaq.com/'
+         referer = "market-activity/dividends?date={0}-{1}-{2}"
+         hdrs = {'Accept': 'application/json, text/plain, */*',
                  'DNT': "1",
                  'Origin': base,
                  'Referer': base + referer.format(year, month, day),
                  'Sec-Fetch-Mode': 'cors',
                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0)'}
-          return hdrs
+         return hdrs
       
      def scraper(self, url, hdrs):
          '''
