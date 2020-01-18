@@ -138,10 +138,22 @@ class dividend_calendar:
                return calendar
            
 if __name__ == '__main__':
-     february = dividend_calendar('2020', '02')
+    year = '2020'
+    month = '02'
+    
+    february = dividend_calendar(year, month)
      
-     function = lambda days: february.calendar(days)
-     objects = list(map(function, list(range(32))))
-     df = pandas.concat(february.calendars)
-     df = df.dropna(how='any')
-     df = df.set_index('companyName')
+    function = lambda days: february.calendar(days)
+    objects = list(map(function, list(range(32))))
+    df = pandas.concat(february.calendars)
+    df = df.dropna(how='any')
+    df = df.set_index('companyName')
+    
+
+    day = '27'
+    
+    urls = february.url(year, month, day)
+    hdrs = february.header(year, month, day)
+    page = requests.get(urls, params = hdrs)
+    page = page.content
+    dictionary = json.loads(page)
