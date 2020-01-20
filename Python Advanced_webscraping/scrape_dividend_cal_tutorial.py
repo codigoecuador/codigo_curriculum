@@ -46,7 +46,7 @@ class dividend_calendar:
            - - - -
            dictionary : Returns a JSON dictionary at a given URL.
          '''
-         page = requests.get(self.url, headers=self.hdrs, params={'date': date})
+         page = requests.get(self.url, headers=self.hdrs, params= {'date':date})
          dictionary = page.json()
          return dictionary
      
@@ -66,11 +66,17 @@ class dividend_calendar:
          to the calendars list (class attribute). Otherwise, it will 
          return an empty dataframe.         
          '''
-         rows = dicti.get('data').get('calendar').get('rows')
+         rows = dicti.get('data', dict({'calendar':{'rows':1}}))
+         rows = rows.get('calendar',dict({'rows':1}))
+         rows = rows.get('rows','')         
          calendar = pandas.DataFrame(rows)
          self.calendars.append(calendar)
          return calendar
-   
+     
+    def date_str(self, day):
+        date_obj = datetime.date(self.year, self.month, day)
+        date_str = date_obj.strftime(format='%Y-%m-%d')     
+        return date_str
             
     def calendar(self, day):
           '''
@@ -93,13 +99,9 @@ class dividend_calendar:
     
           '''
           self.day = day
-          
-          date_obj = datetime.date(self.year, self.month, self.day)
-          date_str = date_obj.strftime(format='%Y-%m-%d')      
-          
+          date_str = self.date_str(day)
           dictionary = self.scraper(date_str)
-          self.dict_to_df(dictionary)
-          
+          self.dict_to_df(dictionary)          
           return dictionary
            
 if __name__ == '__main__':
@@ -134,7 +136,7 @@ if __name__ == '__main__':
     date = datetime.date(year, month, day=28)
     date = date.strftime(format='%Y-%m-%d')    
     
-    api_params = {'date': date}
+    api_params = {'date': '2020-02-3'}
     hdrs =  {'Accept': 'application/json, text/plain, */*',
                  'DNT': "1",
                  'Origin': 'https://www.nasdaq.com/',
