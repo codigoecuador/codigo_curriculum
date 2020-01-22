@@ -67,22 +67,42 @@ def header_function(subdomain):
  
 if __name__ == '__main__':
     base_url = 'https://finance.yahoo.com'
-    symbol = 'BB'
+    symbol = 'BTC-USD'
      
     dt_start = datetime.today() - timedelta(days=1000)
+    dt_start
+    
     dt_end = datetime.today()
-       
+    dt_end
+    
     start = format_date(dt_start)
+    start
+    
     end = format_date(dt_end)
-      
+    end
+    
     sub = subdomain(symbol, start, end)
+    sub
+    
     hdrs = header_function(sub)
+    hdrs
     
     url = base_url + sub
+    url
     
     page = requests.get(url, headers=hdrs)
+    page
+    page.content
+    
     element_html = html.fromstring(page.content)
+    element_html
+    
     table = element_html.xpath('//*[@id="Col1-1-HistoricalDataTable-Proxy"]/section/div[2]/table')
+    table
+    
     table_tree = lxml.etree.tostring(table[0], method='HTML', pretty_print=True)
+    table_tree
+    
     panda = pandas.read_html(table_tree)
+    panda
     
